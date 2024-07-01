@@ -160,14 +160,14 @@ func (h *handler) DeleteAdmin(c *gin.Context) {
 		Id: id,
 	}
 
-	resp, err := h.grpcClient.Admins().Delete(c.Request.Context(), &admin)
+	_, err := h.grpcClient.Admins().Delete(c.Request.Context(), &admin)
 
 	if err != nil {
 		handleResponse(c, h.log, "error while deleting an admin", http.StatusBadRequest, err.Error())
 		return
 	}
 	
-	handleResponse(c, h.log, "Admin deleted successfully", http.StatusOK, resp)
+	handleResponse(c, h.log, "Admin deleted successfully", http.StatusOK, "Admin deleted successfully")
 }
 
 // GetAllAdmins godoc

@@ -159,13 +159,13 @@ func (h *handler) DeleteSuperAdmin(c *gin.Context) {
 		Id: id,
 	}
 
-	resp, err := h.grpcClient.SuperAdmins().Delete(c.Request.Context(), &superAdminId)
+	_, err := h.grpcClient.SuperAdmins().Delete(c.Request.Context(), &superAdminId)
 
 	if err != nil {
 		handleResponse(c, h.log, "error while deleting an superAdmin", http.StatusBadRequest, err.Error())
 		return
 	}
-	handleResponse(c, h.log, "superAdminId deleted successfully", http.StatusOK, resp)
+	handleResponse(c, h.log, "Super admin deleted successfully", http.StatusOK, "Super admin deleted successfully")
 }
 
 // GetAllSuperAdmin godoc

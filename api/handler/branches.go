@@ -129,13 +129,13 @@ func (h *handler) DeleteBranch(c *gin.Context) {
 		Id: id,
 	}
 
-	resp, err := h.grpcClient.Branches().Delete(c.Request.Context(), &branch)
+	_, err := h.grpcClient.Branches().Delete(c.Request.Context(), &branch)
 
 	if err != nil {
 		handleResponse(c, h.log, "error while deleting an branch", http.StatusBadRequest, err.Error())
 		return
 	}
-	handleResponse(c, h.log, "Branch deleted successfully", http.StatusOK, resp)
+	handleResponse(c, h.log, "Branch deleted successfully", http.StatusOK, "Branch deleted successfully")
 }
 
 // GetAllBranches godoc

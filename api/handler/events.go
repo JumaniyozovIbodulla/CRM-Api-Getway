@@ -136,13 +136,13 @@ func (h *handler) DeleteEvent(c *gin.Context) {
 		Id: id,
 	}
 
-	resp, err := h.grpcClient.Events().Delete(c.Request.Context(), &event)
+	_, err := h.grpcClient.Events().Delete(c.Request.Context(), &event)
 
 	if err != nil {
 		handleResponse(c, h.log, "error while deleting an event", http.StatusBadRequest, err.Error())
 		return
 	}
-	handleResponse(c, h.log, "Event deleted successfully", http.StatusOK, resp)
+	handleResponse(c, h.log, "Event deleted successfully", http.StatusOK, "Event deleted successfully")
 }
 
 // GetAllEvents godoc
