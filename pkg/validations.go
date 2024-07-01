@@ -41,5 +41,5 @@ func ValidatePhone(phone string) error {
 }
 
 func ValidateDay(day string) bool {
-	return !strings.EqualFold(day, "sunday") 
+	return !strings.EqualFold(day, "sunday")
 }

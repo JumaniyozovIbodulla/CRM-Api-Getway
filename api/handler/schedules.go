@@ -127,13 +127,13 @@ func (h *handler) DeleteSchedule(c *gin.Context) {
 	schedule := schedule_service.SchedulePrimaryKey{
 		Id: id,
 	}
-	resp, err := h.grpcClient.Schedules().Delete(c.Request.Context(), &schedule)
+	_, err := h.grpcClient.Schedules().Delete(c.Request.Context(), &schedule)
 
 	if err != nil {
 		handleResponse(c, h.log, "error while deleting a schedule", http.StatusBadRequest, err.Error())
 		return
 	}
-	handleResponse(c, h.log, "Schedule deleted successfully", http.StatusOK, resp)
+	handleResponse(c, h.log, "Schedule deleted successfully", http.StatusOK, "Schedule deleted successfully")
 }
 
 // GetAllSchedules godoc

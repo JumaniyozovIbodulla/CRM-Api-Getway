@@ -127,13 +127,13 @@ func (h *handler) DeleteSupportTeacher(c *gin.Context) {
 	supportTeacher := user_service.SupportTeacherPrimaryKey{
 		Id: id,
 	}
-	resp, err := h.grpcClient.SupportTeacher().Delete(c.Request.Context(), &supportTeacher)
+	_, err := h.grpcClient.SupportTeacher().Delete(c.Request.Context(), &supportTeacher)
 
 	if err != nil {
 		handleResponse(c, h.log, "error while deleting a support teacher", http.StatusBadRequest, err.Error())
 		return
 	}
-	handleResponse(c, h.log, "Support teacher deleted successfully", http.StatusOK, resp)
+	handleResponse(c, h.log, "Support teacher deleted successfully", http.StatusOK, "Support teacher deleted successfully")
 }
 
 // GetAllSupportTeacher godoc

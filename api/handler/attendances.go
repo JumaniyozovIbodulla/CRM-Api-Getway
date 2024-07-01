@@ -127,13 +127,13 @@ func (h *handler) DeleteAttendance(c *gin.Context) {
 	attendance := schedule_service.AttendancePrimaryKey{
 		Id: id,
 	}
-	resp, err := h.grpcClient.AttendancesService().Delete(c.Request.Context(), &attendance)
+	_, err := h.grpcClient.AttendancesService().Delete(c.Request.Context(), &attendance)
 
 	if err != nil {
 		handleResponse(c, h.log, "error while deleting a attendance", http.StatusBadRequest, err.Error())
 		return
 	}
-	handleResponse(c, h.log, "Attendance deleted successfully", http.StatusOK, resp)
+	handleResponse(c, h.log, "Attendance deleted successfully", http.StatusOK, "Attendance deleted successfully")
 }
 
 // GetAllAttendances godoc

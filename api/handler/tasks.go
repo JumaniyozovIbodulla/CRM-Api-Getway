@@ -127,13 +127,13 @@ func (h *handler) DeleteTask(c *gin.Context) {
 	task := schedule_service.TaskPrimaryKey{
 		Id: id,
 	}
-	resp, err := h.grpcClient.Tasks().Delete(c.Request.Context(), &task)
+	_, err := h.grpcClient.Tasks().Delete(c.Request.Context(), &task)
 
 	if err != nil {
 		handleResponse(c, h.log, "error while deleting a task", http.StatusBadRequest, err.Error())
 		return
 	}
-	handleResponse(c, h.log, "Task deleted successfully", http.StatusOK, resp)
+	handleResponse(c, h.log, "Task deleted successfully", http.StatusOK, "Task deleted successfully")
 }
 
 // GetAllTasks godoc

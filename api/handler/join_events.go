@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"crmapi/genproto/user_service/join_events"
+	user_service "crmapi/genproto/user_service/join_events"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -29,12 +29,13 @@ func (h *handler) CreateJoinEvent(c *gin.Context) {
 		return
 	}
 
-	_, err := h.grpcClient.JoinEvens().Create(c.Request.Context(), &evenJoin)
+	resp, err := h.grpcClient.JoinEvens().Create(c.Request.Context(), &evenJoin)
 
 	if err != nil {
 		handleGrpcErrWithDescription(c, h.log, err, "error while creating a evenJoin")
 		return
 	}
+	handleResponse(c, h.log, "Added successfully", http.StatusCreated, resp)
 	handleGrpcErrWithDescription(c, h.log, err, "EvenJoin created successfully")
 }
 
@@ -97,11 +98,11 @@ func (h *handler) DeleteEventJoin(c *gin.Context) {
 	joinEvent := user_service.JoinEventPrimaryKey{
 		Id: id,
 	}
-	resp, err := h.grpcClient.JoinEvens().Delete(c.Request.Context(), &joinEvent)
+	_, err := h.grpcClient.JoinEvens().Delete(c.Request.Context(), &joinEvent)
 
 	if err != nil {
 		handleResponse(c, h.log, "error while deleting a join event", http.StatusBadRequest, err.Error())
 		return
 	}
-	handleResponse(c, h.log, "Join event deleted successfully", http.StatusOK, resp)
+	handleResponse(c, h.log, "Join event deleted successfully", http.StatusOK, "Join event deleted successfully")
 }

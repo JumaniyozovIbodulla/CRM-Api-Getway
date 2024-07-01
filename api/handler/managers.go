@@ -127,13 +127,13 @@ func (h *handler) DeleteManager(c *gin.Context) {
 	manager := user_service.ManagerPrimaryKey{
 		Id: id,
 	}
-	resp, err := h.grpcClient.Managers().Delete(c.Request.Context(), &manager)
+	_, err := h.grpcClient.Managers().Delete(c.Request.Context(), &manager)
 
 	if err != nil {
 		handleResponse(c, h.log, "error while deleting a manager", http.StatusBadRequest, err.Error())
 		return
 	}
-	handleResponse(c, h.log, "Manager deleted successfully", http.StatusOK, resp)
+	handleResponse(c, h.log, "Manager deleted successfully", http.StatusOK, "Manager deleted successfully")
 }
 
 // GetAllManagers godoc

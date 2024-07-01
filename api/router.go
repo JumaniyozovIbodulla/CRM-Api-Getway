@@ -103,7 +103,7 @@ func New(cnf Config) *gin.Engine {
 	r.POST("/api/v1/join-event", handler.CreateJoinEvent)
 	r.GET("/api/v1/join-event/:id", handler.GetByIdEventJoin)
 	r.DELETE("/api/v1/join-event/:id", handler.DeleteEventJoin)
-
+// full
 	// managers
 	r.POST("/api/v1/manager", handler.CreateManager)
 	r.GET("/api/v1/manager/:id", handler.GetByIdManager)
