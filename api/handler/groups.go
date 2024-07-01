@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"crmapi/genproto/user_service/groups"
+	user_service "crmapi/genproto/user_service/groups"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -127,13 +127,13 @@ func (h *handler) DeleteGroup(c *gin.Context) {
 	group := user_service.GroupPrimaryKey{
 		Id: id,
 	}
-	resp, err := h.grpcClient.Groups().Delete(c.Request.Context(), &group)
+	_, err := h.grpcClient.Groups().Delete(c.Request.Context(), &group)
 
 	if err != nil {
 		handleResponse(c, h.log, "error while deleting a group", http.StatusBadRequest, err.Error())
 		return
 	}
-	handleResponse(c, h.log, "Group deleted successfully", http.StatusOK, resp)
+	handleResponse(c, h.log, "Group deleted successfully", http.StatusOK, "Group deleted successfully")
 }
 
 // GetAllGroups godoc
