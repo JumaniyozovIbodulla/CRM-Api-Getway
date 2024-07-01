@@ -1,7 +1,8 @@
 package handler
 
 import (
-	"crmapi/genproto/user_service/students"
+	user_service "crmapi/genproto/user_service/students"
+	"crmapi/pkg"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -29,13 +30,28 @@ func (h *handler) CreateStudent(c *gin.Context) {
 		return
 	}
 
-	_, err := h.grpcClient.Students().Create(c.Request.Context(), &student)
+	if err := pkg.ValidateFullName(student.FullName); err != nil {
+		handleGrpcErrWithDescription(c, h.log, err, "full name is not valid")
+		return
+	}
+
+	if err := pkg.ValidatePassword(student.Password); err != nil {
+		handleGrpcErrWithDescription(c, h.log, err, "password is not valid")
+		return
+	}
+
+	if err := pkg.ValidatePhone(student.Phone); err != nil {
+		handleGrpcErrWithDescription(c, h.log, err, "phone number starts with +998...")
+		return
+	}
+
+	resp, err := h.grpcClient.Students().Create(c.Request.Context(), &student)
 
 	if err != nil {
 		handleGrpcErrWithDescription(c, h.log, err, "error while creating a student")
 		return
 	}
-	handleGrpcErrWithDescription(c, h.log, err, "Student created successfully")
+	handleResponse(c, h.log, "Student created successfully", http.StatusCreated, resp)
 }
 
 // GetByIdStudent godoc
@@ -91,6 +107,21 @@ func (h *handler) UpdateStudent(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&student); err != nil {
 		handleResponse(c, h.log, "error while reading request body", http.StatusBadRequest, err)
+		return
+	}
+
+	if err := pkg.ValidateFullName(student.FullName); err != nil {
+		handleGrpcErrWithDescription(c, h.log, err, "full name is not valid")
+		return
+	}
+
+	if err := pkg.ValidatePassword(student.Password); err != nil {
+		handleGrpcErrWithDescription(c, h.log, err, "password is not valid")
+		return
+	}
+
+	if err := pkg.ValidatePhone(student.Phone); err != nil {
+		handleGrpcErrWithDescription(c, h.log, err, "phone number starts with +998...")
 		return
 	}
 

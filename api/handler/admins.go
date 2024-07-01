@@ -2,6 +2,7 @@ package handler
 
 import (
 	"crmapi/genproto/user_service/administrators"
+	"crmapi/pkg"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -29,13 +30,29 @@ func (h *handler) CreateAdmin(c *gin.Context) {
 		return
 	}
 
-	_, err := h.grpcClient.Admins().Create(c.Request.Context(), &admin)
+	if err := pkg.ValidateFullName(admin.FullName); err != nil {
+		handleGrpcErrWithDescription(c, h.log, err, "full name is not valid")
+		return
+	}
+
+	if err := pkg.ValidatePassword(admin.Password); err != nil {
+		handleGrpcErrWithDescription(c, h.log, err, "password is not valid")
+		return
+	}
+
+	if err := pkg.ValidatePhone(admin.Phone); err != nil {
+		handleGrpcErrWithDescription(c, h.log, err, "phone number starts with +998...")
+		return
+	}
+
+	resp, err := h.grpcClient.Admins().Create(c.Request.Context(), &admin)
 
 	if err != nil {
 		handleGrpcErrWithDescription(c, h.log, err, "error while creating an admin")
 		return
 	}
-	handleGrpcErrWithDescription(c, h.log, err, "Admin created successfully")
+
+	handleResponse(c, h.log, "Adminstrator is created", http.StatusCreated, resp)
 }
 
 // GetByIdAdmin godoc
@@ -94,6 +111,21 @@ func (h *handler) UpdateAdmin(c *gin.Context) {
 		return
 	}
 
+	if err := pkg.ValidateFullName(admin.FullName); err != nil {
+		handleGrpcErrWithDescription(c, h.log, err, "full name is not valid")
+		return
+	}
+
+	if err := pkg.ValidatePassword(admin.Password); err != nil {
+		handleGrpcErrWithDescription(c, h.log, err, "password is not valid")
+		return
+	}
+
+	if err := pkg.ValidatePhone(admin.Phone); err != nil {
+		handleGrpcErrWithDescription(c, h.log, err, "phone number starts with +998...")
+		return
+	}
+
 	resp, err := h.grpcClient.Admins().Update(c.Request.Context(), &admin)
 
 	if err != nil {
@@ -134,6 +166,7 @@ func (h *handler) DeleteAdmin(c *gin.Context) {
 		handleResponse(c, h.log, "error while deleting an admin", http.StatusBadRequest, err.Error())
 		return
 	}
+	
 	handleResponse(c, h.log, "Admin deleted successfully", http.StatusOK, resp)
 }
 

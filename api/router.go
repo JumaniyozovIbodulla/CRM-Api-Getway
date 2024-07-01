@@ -72,13 +72,21 @@ func New(cnf Config) *gin.Engine {
 	r.GET("/api/v1/super-admins", handler.GetAllSuperAdmin)
 
 	// branches
-	r.POST("/api/v1/branch", handler.CreateSuperAdmin)
-	r.GET("/api/v1/branch/:id", handler.GetByIdSuperAdmin)
-	r.PUT("/api/v1/branch", handler.UpdateSuperAdmin)
-	r.DELETE("/api/v1/branch/:id", handler.DeleteSuperAdmin)
-	r.GET("/api/v1/branches", handler.GetAllSuperAdmin)
+	r.POST("/api/v1/branch", handler.CreateBranch)
+	r.GET("/api/v1/branch/:id", handler.GetByIdBranch)
+	r.PUT("/api/v1/branch", handler.UpdateBranch)
+	r.DELETE("/api/v1/branch/:id", handler.DeleteBranch)
+	r.GET("/api/v1/branches", handler.GetAllBranches)
 
-	// branches
+	// admins
+	r.POST("/api/v1/admin", handler.CreateAdmin)
+	r.GET("/api/v1/admin/:id", handler.GetByIdAdmin)
+	r.PUT("/api/v1/admin", handler.UpdateAdmin)
+	r.DELETE("/api/v1/admin/:id", handler.DeleteAdmin)
+	r.GET("/api/v1/admins", handler.GetAllAdmins)
+
+
+	// events
 	r.POST("/api/v1/event", handler.CreateEvent)
 	r.GET("/api/v1/event/:id", handler.GetByIdEvent)
 	r.PUT("/api/v1/event", handler.UpdateEvent)

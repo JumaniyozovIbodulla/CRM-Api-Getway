@@ -53,10 +53,6 @@ const (
 	ErrorCodePasswordsNotEqual = "PASSWORDS_NOT_EQUAL"
 )
 
-var (
-	SigningKey = []byte("FfLbN7pIEYe8@!EqrttOLiwa(H8)7Ddo")
-)
-
 // New ...
 func New(c *HandlerConfig) *handler {
 	return &handler{

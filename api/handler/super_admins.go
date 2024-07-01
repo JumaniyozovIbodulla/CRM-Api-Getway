@@ -2,6 +2,7 @@ package handler
 
 import (
 	user_service "crmapi/genproto/user_service/super_admins"
+	"crmapi/pkg"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -29,13 +30,28 @@ func (h *handler) CreateSuperAdmin(c *gin.Context) {
 		return
 	}
 
-	_, err := h.grpcClient.SuperAdmins().Create(c.Request.Context(), &superAdmin)
+	if err := pkg.ValidateFullName(superAdmin.FullName); err != nil {
+		handleGrpcErrWithDescription(c, h.log, err, "full name is not valid")
+		return
+	}
+
+	if err := pkg.ValidatePassword(superAdmin.Password); err != nil {
+		handleGrpcErrWithDescription(c, h.log, err, "password is not valid")
+		return
+	}
+
+	if err := pkg.ValidatePhone(superAdmin.Phone); err != nil {
+		handleGrpcErrWithDescription(c, h.log, err, "phone number starts with +998...")
+		return
+	}
+
+	resp, err := h.grpcClient.SuperAdmins().Create(c.Request.Context(), &superAdmin)
 
 	if err != nil {
 		handleGrpcErrWithDescription(c, h.log, err, "error while creating superAdmin")
 		return
 	}
-	handleGrpcErrWithDescription(c, h.log, err, "superAdmin created successfully")
+	c.JSON(http.StatusCreated, resp)
 }
 
 // GetByIdSuperAdmin godoc
@@ -91,6 +107,21 @@ func (h *handler) UpdateSuperAdmin(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&superAdmin); err != nil {
 		handleResponse(c, h.log, "error while reading request body", http.StatusBadRequest, err)
+		return
+	}
+
+	if err := pkg.ValidateFullName(superAdmin.FullName); err != nil {
+		handleGrpcErrWithDescription(c, h.log, err, "full name is not valid")
+		return
+	}
+
+	if err := pkg.ValidatePassword(superAdmin.Password); err != nil {
+		handleGrpcErrWithDescription(c, h.log, err, "password is not valid")
+		return
+	}
+
+	if err := pkg.ValidatePhone(superAdmin.Phone); err != nil {
+		handleGrpcErrWithDescription(c, h.log, err, "phone number starts with +998...")
 		return
 	}
 

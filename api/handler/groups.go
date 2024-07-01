@@ -29,13 +29,13 @@ func (h *handler) CreateGroup(c *gin.Context) {
 		return
 	}
 
-	_, err := h.grpcClient.Groups().Create(c.Request.Context(), &group)
+	resp, err := h.grpcClient.Groups().Create(c.Request.Context(), &group)
 
 	if err != nil {
 		handleGrpcErrWithDescription(c, h.log, err, "error while creating a group")
 		return
 	}
-	handleGrpcErrWithDescription(c, h.log, err, "Group created successfully")
+	handleResponse(c, h.log, "Created group", http.StatusCreated, resp)
 }
 
 // GetByIdGroup godoc

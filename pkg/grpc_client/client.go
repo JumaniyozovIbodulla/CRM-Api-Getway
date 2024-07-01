@@ -42,9 +42,10 @@ type GrpcClientI interface {
 }
 
 type GrpcClient struct {
-	superAdminService     sp.SuperAdminServiceClient
-	bracnesService        br.BranchesServiceClient
-	adminsService         ad.AdministratorsServiceClient
+	superAdminService sp.SuperAdminServiceClient
+	bracnesService    br.BranchesServiceClient
+	adminsService     ad.AdministratorsServiceClient // delete, getall
+
 	eventsService         ev.EventServiceClient
 	groupsService         gr.GroupsServiceClient
 	joinEventsService     ej.JoinEventServiceClient
@@ -188,20 +189,20 @@ func New(cfg config.Config) (*GrpcClient, error) {
 	}
 
 	return &GrpcClient{
-		superAdminService: sp.NewSuperAdminServiceClient(superAdminService),
-		bracnesService: br.NewBranchesServiceClient(branchesService),
-		adminsService: ad.NewAdministratorsServiceClient(adminService),
-		eventsService: ev.NewEventServiceClient(eventsService),
-		groupsService: gr.NewGroupsServiceClient(groupsService),
-		joinEventsService: ej.NewJoinEventServiceClient(joinEventsService),
-		managersService: mn.NewManagersServiceClient(managersService),
-		studentsService: st.NewStudentServiceClient(studentsService),
+		superAdminService:     sp.NewSuperAdminServiceClient(superAdminService),
+		bracnesService:        br.NewBranchesServiceClient(branchesService),
+		adminsService:         ad.NewAdministratorsServiceClient(adminService),
+		eventsService:         ev.NewEventServiceClient(eventsService),
+		groupsService:         gr.NewGroupsServiceClient(groupsService),
+		joinEventsService:     ej.NewJoinEventServiceClient(joinEventsService),
+		managersService:       mn.NewManagersServiceClient(managersService),
+		studentsService:       st.NewStudentServiceClient(studentsService),
 		supportTeacherService: ss.NewSupportTeacherServiceClient(supportTeachersService),
-		teachersService: ts.NewTeacherServiceClient(teachersService),
-		schedulesService: sc.NewScheduleServiceClient(scheduleService),
-		tasksService: tk.NewTaskServiceClient(taskService),
-		lessonsService: ls.NewLesssonServiceClient(lessonsService),
-		attendacesService: at.NewAttendanceServiceClient(attendancesService),
+		teachersService:       ts.NewTeacherServiceClient(teachersService),
+		schedulesService:      sc.NewScheduleServiceClient(scheduleService),
+		tasksService:          tk.NewTaskServiceClient(taskService),
+		lessonsService:        ls.NewLesssonServiceClient(lessonsService),
+		attendacesService:     at.NewAttendanceServiceClient(attendancesService),
 	}, nil
 }
 

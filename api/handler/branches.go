@@ -29,13 +29,14 @@ func (h *handler) CreateBranch(c *gin.Context) {
 		return
 	}
 
-	_, err := h.grpcClient.Branches().Create(c.Request.Context(), &branch)
+	resp, err := h.grpcClient.Branches().Create(c.Request.Context(), &branch)
 
 	if err != nil {
 		handleGrpcErrWithDescription(c, h.log, err, "error while creating a branch")
 		return
 	}
-	handleGrpcErrWithDescription(c, h.log, err, "Branch created successfully")
+
+	handleResponse(c, h.log, "Branch created successfully", http.StatusCreated, resp)
 }
 
 // GetByIdBranch godoc
