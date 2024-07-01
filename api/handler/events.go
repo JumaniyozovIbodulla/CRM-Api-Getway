@@ -1,7 +1,9 @@
 package handler
 
 import (
-	"crmapi/genproto/user_service/events"
+	user_service "crmapi/genproto/user_service/events"
+	"crmapi/pkg"
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -29,13 +31,19 @@ func (h *handler) CreateEvent(c *gin.Context) {
 		return
 	}
 
-	_, err := h.grpcClient.Events().Create(c.Request.Context(), &event)
+	if pkg.ValidateDay(event.Day) {
+		handleGrpcErrWithDescription(c, h.log, errors.New("must be sunday"), "error while creating an event")
+		return
+	}
+
+	resp, err := h.grpcClient.Events().Create(c.Request.Context(), &event)
 
 	if err != nil {
 		handleGrpcErrWithDescription(c, h.log, err, "error while creating an event")
 		return
 	}
-	handleGrpcErrWithDescription(c, h.log, err, "Event created successfully")
+
+	handleResponse(c, h.log, "Created event", http.StatusCreated, resp)
 }
 
 // GetByIdEvent godoc

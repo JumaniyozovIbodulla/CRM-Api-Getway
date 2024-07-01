@@ -45,7 +45,7 @@ type GrpcClient struct {
 	superAdminService sp.SuperAdminServiceClient
 	bracnesService    br.BranchesServiceClient
 	adminsService     ad.AdministratorsServiceClient // delete, getall
-
+	
 	eventsService         ev.EventServiceClient
 	groupsService         gr.GroupsServiceClient
 	joinEventsService     ej.JoinEventServiceClient

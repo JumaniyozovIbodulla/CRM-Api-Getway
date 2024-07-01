@@ -85,7 +85,6 @@ func New(cnf Config) *gin.Engine {
 	r.DELETE("/api/v1/admin/:id", handler.DeleteAdmin)
 	r.GET("/api/v1/admins", handler.GetAllAdmins)
 
-
 	// events
 	r.POST("/api/v1/event", handler.CreateEvent)
 	r.GET("/api/v1/event/:id", handler.GetByIdEvent)
